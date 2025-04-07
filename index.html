@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2b6777" />
+  <link rel="manifest" href="manifest.json" />
+  <title>TheoGuard – App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>TheoGuard</h1>
+    <p>Discernment for everyday believers</p>
+  </header>
+  <nav>
+    <button onclick="switchTab('home')">Home</button>
+    <button onclick="switchTab('doctrine')">Doctrine</button>
+    <button onclick="switchTab('audio')">Audio</button>
+    <button onclick="switchTab('teaching')">Check</button>
+  </nav>
+
+  <section id="home" class="active">
+    <h2>Welcome to TheoGuard</h2>
+    <p>This is a mobile-friendly Christian tool to help you test teachings and learn sound doctrine.</p>
+  </section>
+
+  <section id="doctrine">
+    <h2>Doctrine Library</h2>
+    <p><strong>Trinity:</strong> One God in three persons – Father, Son, Spirit. (Matt. 28:19)</p>
+    <p><strong>Salvation by Grace:</strong> Saved through faith, not works. (Eph. 2:8–9)</p>
+    <p><strong>Scripture:</strong> The Bible is inspired and true. (2 Tim. 3:16)</p>
+  </section>
+
+  <section id="audio">
+    <h2>Audio Transcript (Simulated)</h2>
+    <input type="file" accept="audio/*" id="audioInput">
+    <button class="action" onclick="simulateTranscript()">Generate Transcript</button>
+    <textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
+    <div id="audioMsg"></div>
+  </section>
+
+  <section id="teaching">
+    <h2>Teaching Checker</h2>
+    <textarea id="inputText" placeholder="Type a teaching to check..."></textarea>
+    <button class="action" onclick="checkTeaching()">Evaluate</button>
+    <div class="result" id="resultBox"></div>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
