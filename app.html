@@ -1,42 +1,106 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TheoGuard App</title><style>
-body{margin:0;font-family:sans-serif;background:#f4f4f4}
-header{background:#2b6777;color:white;padding:1em;text-align:center}
-nav{display:flex;justify-content:space-around;background:#52ab98;padding:0.5em 0}
-nav button{background:none;border:none;color:white;font-weight:bold;cursor:pointer}
-section{padding:20px;display:none}section.active{display:block}
-textarea,input[type=file]{width:100%;max-width:600px;margin-top:1em;padding:10px;border-radius:8px;border:1px solid #ccc}
-button.action{background:#2b6777;color:white;padding:10px 20px;border:none;border-radius:8px;margin-top:1em;cursor:pointer}
-.result{margin-top:1em;background:white;padding:1em;border-radius:6px;max-width:600px;box-shadow:0 0 5px rgba(0,0,0,0.1)}
-</style></head><body>
-<header><h1>TheoGuard App</h1><p>Discernment for everyday believers</p></header>
-<nav><button onclick="switchTab('doctrine')">Doctrine</button><button onclick="switchTab('audio')">Audio</button>
-<button onclick="switchTab('teaching')">Check</button></nav>
-<section id="doctrine" class="active"><h2>Doctrine Library</h2>
-<p><strong>Trinity:</strong> One God in three persons – Father, Son, Spirit. (Matt. 28:19)</p>
-<p><strong>Salvation by Grace:</strong> Saved through faith, not works. (Eph. 2:8–9)</p>
-<p><strong>Scripture:</strong> The Bible is inspired and true. (2 Tim. 3:16)</p></section>
-<section id="audio"><h2>Audio Transcript (Simulated)</h2>
-<input type="file" accept="audio/*" id="audioInput">
-<button class="action" onclick="simulateTranscript()">Generate Transcript</button>
-<textarea id="transcript" placeholder="Transcript will appear here..."></textarea>
-<div id="audioMsg"></div></section>
-<section id="teaching"><h2>Teaching Checker</h2>
-<textarea id="inputText" placeholder="Type a teaching to check..."></textarea>
-<button class="action" onclick="checkTeaching()">Evaluate</button>
-<div class="result" id="resultBox"></div></section>
-<script>
-function switchTab(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');}
-function checkTeaching(){const t=document.getElementById("inputText").value.toLowerCase();let r="";
-if(t.includes("jesus is not god"))r="❌ Arianism detected. See John 1:1.";
-else if(t.includes("everyone goes to heaven"))r="⚠️ Universalism. See Matthew 25:46.";
-else if(t.includes("we can earn salvation"))r="❌ Pelagianism. See Ephesians 2:8-9.";
-else r="✅ No major issues detected. Keep growing in the Word!";
-document.getElementById("resultBox").innerText=r;}
-function simulateTranscript(){const f=document.getElementById("audioInput").files[0],t=document.getElementById("transcript"),m=document.getElementById("audioMsg");
-if(!f){m.innerText="❌ Please select an audio file.";m.style.color="red";return}
-t.value=`Transcript of ${f.name} (simulated):\n\nJesus is the Son of God. We are saved by grace through faith...`;
-m.innerText="✅ Transcript generated.";m.style.color="green";}
-</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TheoGuard App</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #f4f4f4; }
+    header { background: #2b6777; color: white; padding: 1em; text-align: center; }
+    header img { width: 120px; border-radius: 6px; margin-bottom: 0.5em; }
+    nav { display: flex; justify-content: space-around; background: #52ab98; padding: 0.5em 0; }
+    nav button { background: none; border: none; color: white; font-weight: bold; cursor: pointer; }
+    section { padding: 20px; display: none; }
+    section.active { display: block; }
+    textarea, input[type=file], input[type=text] {
+      width: 100%; max-width: 700px; padding: 10px; margin-top: 1em; border-radius: 8px; border: 1px solid #ccc;
+    }
+    button.action {
+      background: #2b6777; color: white; padding: 10px 20px; border: none; border-radius: 8px; margin-top: 1em;
+      cursor: pointer;
+    }
+    .status, .result { margin-top: 1em; font-weight: bold; color: #2b6777; max-width: 700px; }
+    .result { background: white; padding: 1em; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="theoguard_logo.png" alt="TheoGuard Logo" />
+    <h1>TheoGuard Discernment App</h1>
+  </header>
+  <nav>
+    <button onclick="switchTab('doctrine')">Doctrine</button>
+    <button onclick="switchTab('audio')">Transcription</button>
+    <button onclick="switchTab('check')">Checker</button>
+  </nav>
+  <section id="doctrine" class="active">
+    <h2>Doctrine Library</h2>
+    <p><strong>Trinity:</strong> One God in three persons – Father, Son, Spirit. (Matt. 28:19)</p>
+    <p><strong>Salvation:</strong> By grace through faith. (Eph. 2:8–9)</p>
+  </section>
+  <section id="audio">
+    <h2>Audio Transcription</h2>
+    <input type="text" id="apiKey" placeholder="AssemblyAI API key" />
+    <input type="file" id="audioFile" accept="audio/*" />
+    <button class="action" onclick="uploadAndTranscribe()">Transcribe</button>
+    <div class="status" id="status"></div>
+    <textarea id="transcript" placeholder="Transcript appears here..."></textarea>
+  </section>
+  <section id="check">
+    <h2>Teaching Checker</h2>
+    <textarea id="inputText" placeholder="Paste a teaching..."></textarea>
+    <button class="action" onclick="checkTeaching()">Evaluate</button>
+    <div class="result" id="resultBox"></div>
+  </section>
+  <script>
+    function switchTab(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    function checkTeaching() {
+      const text = document.getElementById("inputText").value.toLowerCase();
+      let result = "";
+      if (text.includes("jesus is not god")) result = "Arianism detected. See John 1:1.";
+      else if (text.includes("everyone goes to heaven")) result = "Universalism. See Matt. 25:46.";
+      else result = "No major issues found.";
+      document.getElementById("resultBox").innerText = result;
+    }
+    async function uploadAndTranscribe() {
+      const apiKey = document.getElementById("apiKey").value.trim();
+      const file = document.getElementById("audioFile").files[0];
+      const status = document.getElementById("status");
+      const transcript = document.getElementById("transcript");
+      if (!apiKey || !file) return alert("Missing API key or file.");
+      status.textContent = "Uploading...";
+      const uploadRes = await fetch("https://api.assemblyai.com/v2/upload", {
+        method: "POST", headers: { authorization: apiKey }, body: file
+      });
+      const audioUrl = (await uploadRes.json()).upload_url;
+      status.textContent = "Transcribing...";
+      const transcribeRes = await fetch("https://api.assemblyai.com/v2/transcript", {
+        method: "POST",
+        headers: { authorization: apiKey, "content-type": "application/json" },
+        body: JSON.stringify({ audio_url: audioUrl })
+      });
+      const id = (await transcribeRes.json()).id;
+      let done = false;
+      while (!done) {
+        await new Promise(r => setTimeout(r, 5000));
+        const poll = await fetch("https://api.assemblyai.com/v2/transcript/" + id, {
+          headers: { authorization: apiKey }
+        });
+        const data = await poll.json();
+        if (data.status === "completed") {
+          transcript.value = data.text;
+          status.textContent = "Transcription complete.";
+          done = true;
+        } else if (data.status === "error") {
+          status.textContent = "Error: " + data.error;
+          break;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
