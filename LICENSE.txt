@@ -1,0 +1,19 @@
+TheoGuard - A Biblical Discernment Tool
+Copyright © 2025 Paulus Obey Inc. All Rights Reserved.
+
+This software and associated materials (webpages, branding, code, and content)
+are the intellectual property of Paulus Obey Inc.
+
+Unauthorized reproduction, redistribution, modification, or commercial use
+of TheoGuard or its components without explicit written permission is prohibited.
+
+For licensing inquiries, permissions, or ministry usage, contact:
+Email: info@theoguard.org
+Website: https://paulusobey.github.io/Theoguard
+
+Trademark:
+"TheoGuard" is a distinctive ministry and teaching brand representing a discernment-based
+Christian tool. Use of this name in religious or educational software contexts without
+authorization is not permitted.
+
+This project is not open-source unless explicitly licensed as such.
